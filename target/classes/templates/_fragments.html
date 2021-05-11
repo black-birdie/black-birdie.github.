@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">博客详情</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
+  <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+  <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
+  <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+  <link rel="stylesheet" href="../static/css/c.css" th:href="@{/css/c.css}">
+</head>
+<body>
+
+
+<!--导航-->
+<nav th:fragment="menu(n)" class="ui inverted attached segment a-nav">
+  <div class="ui  inverted fixed borderless menu ">
+    <h2 class="ui b-center center aligned blue header mobile-show">blog</h2>
+    <a href="#" th:href="@{/}" class=" m-item brown basic item mobile-hide" th:classappend="${n==1} ? 'active'">首页</a>
+    <a href="#" th:href="@{/types/-1}" class=" m-item orange basic item mobile-hide" th:classappend="${n==2} ? 'active'">分类</a>
+    <a href="#" th:href="@{/tags/-1}" class=" m-item yellow item mobile-hide" th:classappend="${n==3} ? 'active'">标签</a>
+    <a href="#" th:href="@{/archives/}" class=" m-item olive item mobile-hide" th:classappend="${n==4} ? 'active'">档案馆</a>
+    <a href="#" th:href="@{/about/}" class=" m-item violet item mobile-hide" th:classappend="${n==5} ? 'active'">关于我</a>
+    <div class="right m-item item a-search">
+      <form name="search" action="#" th:action="@{/search}" method="post" target="_blank">
+        <div class="ui icon inverted transparent input ">
+          <input type="text" name="query" placeholder="Search...." th:value="${query}">
+          <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+        </div>
+      </form>
+    </div>
+    <button class=" ui a-button circular red icon button mobile-show">
+      <i class=" bars icon"></i>
+    </button>
+    <div class="ui sidebar inverted vertical borderless menu">
+      <div class="ui  d-center item ">
+        <div class="text">
+          <img class="ui avatar center image" src="https://unsplash.it/100/100?image=1005" th:src="@{/images/black.jpg}" style="width:150px;height: 150px;">
+        </div>
+      </div>
+      <a href="#" th:href="@{/}" class=" m-item brown c-center item " th:classappend="${n==1} ? 'active'" ></i>首页</a>
+      <a href="#" th:href="@{/types/-1}" class=" m-item orange basic c-center item " th:classappend="${n==2} ? 'active'"></i>分类</a>
+      <a href="#" th:href="@{/tags/-1}" class=" m-item yellow c-center item " th:classappend="${n==3} ? 'active'">标签</a>
+      <a href="#" th:href="@{/archives/}" class=" m-item olive c-center item " th:classappend="${n==4} ? 'active'">档案馆</a>
+      <a href="#" th:href="@{/about/}" class=" m-item violet c-center item " th:classappend="${n==5} ? 'active'">关于我</a>
+    </div>
+  </div>
+</nav>
+<!--底部footer-->
+<footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
+  <div class="ui center aligned container">
+    <div class="ui inverted divided stackable grid">
+      <div class="five wide column" >
+        <h4 class="ui inverted header m-text-thin m-text-spaced " >最新博客</h4>
+        <div id="newblog-container">
+          <div class="ui inverted link list" th:fragment="newblogList">
+            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="item m-text-thin" th:each="blog : ${newblogs}" th:text="${blog.title}">用户故事（User Story）</a>
+            <!--/*-->
+            <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+            <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+            <!--*/-->
+          </div>
+        </div>
+      </div>
+      <div class="five wide column">
+        <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+        <div class="ui inverted link list">
+          <a href="#" class="item m-text-thin" th:text="#{index.email}">Email：2961329526@qq.com</a>
+          <a href="#" class="item m-text-thin" th:text="#{index.qq}">QQ：2961329526</a>
+        </div>
+      </div>
+      <div class="six wide column">
+        <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+        <p class="m-text-thin m-text-spaced m-opacity-mini" th:text="#{index.blogDescription}">这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+      </div>
+    </div>
+  </div>
+
+</footer>
+
+<th:block th:fragment="script">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+  <script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+  <script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+  <script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+  <script src="../static/lib/waypoints/jquery.waypoints.min.js" th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+  <script>
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+    $('.a-button').click(function () {
+      $('.sidebar')
+              .sidebar('setting', 'transition', 'overlay')
+              .sidebar('toggle')
+      ;
+    })
+  </script>
+
+</th:block>
+
+</body>
+</html>

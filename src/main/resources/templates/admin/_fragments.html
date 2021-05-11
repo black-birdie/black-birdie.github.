@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${title}">博客详情</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
+  <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/c.css}">
+</head>
+<body>
+
+<!--导航-->
+<nav th:fragment="menu(n)"class="ui inverted attached segment a-nav">
+  <div class="ui  inverted stackable  fixed menu ">
+    <h2 class="ui a-center center aligned blue header ">后台管理</h2>
+    <a href="#" th:href="@{/admin/blogs}" class=" m-item item mobile-hide" th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>博客</a>
+    <a href="#" th:href="@{/admin/types}" class=" m-item item mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>
+    <a href="#" th:href="@{/admin/tags}" class="m-item item mobile-hide" th:classappend="${n==3} ? 'active'"><i class="mini tags icon"></i>标签</a>
+    <div class="ui dropdown right item a-dropdown mobile-hide ">
+        <div class="text">
+          <img src="../../static/images/black.jpg"  th:src="@{/images/black.jpg}" class="ui avatar image">
+          <span th:text="${session.user.nickname}">黑色的小小鸟</span>
+        </div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <a href="#" th:href="@{/admin/logout}" class="item">注销</a>
+        </div>
+      </div>
+    <button class=" ui a-button circular red icon button mobile-show">
+      <i class=" bars icon"></i>
+    </button>
+  </div>
+    <div class="ui sidebar inverted vertical borderless menu">
+      <div class="ui  d-center item ">
+        <div class="text">
+          <img class="ui avatar center image" src="https://unsplash.it/100/100?image=1005" th:src="@{/images/black.jpg}" style="width:150px;height: 150px;">
+        </div>
+      </div>
+      <a href="#" th:href="@{/admin/blogs}" class=" m-item c-center item " th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>博客</a>
+      <a href="#" th:href="@{/admin/types}" class=" m-item c-center item " th:classappend="${n==2} ? 'active'"><i class="mini idea icon"></i>分类</a>
+      <a href="#" th:href="@{/admin/tags}" class="m-item c-center item " th:classappend="${n==3} ? 'active'"><i class="mini tags icon"></i>标签</a>
+      <div class="menu">
+        <a href="#" th:href="@{/admin/logout}" class="c-center item">注销</a>
+      </div>
+
+  </div>
+  </div>
+</nav>
+<div class="ui grid">
+  div.ui.four.wide.
+</div>
+
+
+<!--导航-->
+
+
+
+<!--底部footer-->
+<footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
+  <div class="ui center aligned container">
+    <div class="ui inverted divided stackable grid">
+      <div class="five wide column" >
+        <h4 class="ui inverted header m-text-thin m-text-spaced " >最新博客</h4>
+        <div id="newblog-container">
+          <div class="ui inverted link list" th:fragment="newblogList">
+            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="item m-text-thin" th:each="blog : ${newblogs}" th:text="${blog.title}">用户故事（User Story）</a>
+            <!--/*-->
+            <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+            <a href="#" class="item m-text-thin">用户故事（User Story）</a>
+            <!--*/-->
+          </div>
+        </div>
+      </div>
+      <div class="five wide column">
+        <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+        <div class="ui inverted link list">
+          <a href="#" class="item m-text-thin" th:text="#{index.email}">Email：2961329526@qq.com</a>
+          <a href="#" class="item m-text-thin" th:text="#{index.qq}">QQ：2961329526</a>
+        </div>
+      </div>
+      <div class="six wide column">
+        <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+        <p class="m-text-thin m-text-spaced m-opacity-mini" th:text="#{index.blogDescription}">这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+      </div>
+    </div>
+  </div>
+
+</footer>
+
+<th:block th:fragment="script">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+
+
+</th:block>
+<script>
+  $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+  $('.a-button').click(function () {
+    $('.sidebar')
+            .sidebar('setting', 'transition', 'overlay')
+            .sidebar('toggle')
+    ;
+  })
+</script>
+<script type="text/javascript" th:inline="javascript">
+  $('.ajax-blogs').click(function (){
+    $.ajax({
+      type:'get',
+      data:{},
+      url: /*[[@{/admin/blogs}]]*/'blog-input.html',
+      dataType:'html',
+      success:function (response){
+        $('body').html(response);
+      }
+    });
+  });
+  $('.ajax-blogs-input').click(function (){
+    $.ajax({
+      type:'get',
+      data:{},
+      url: /*[[@{/admin/blogs/input}]]*/'blog-input.html',
+      dataType:'html',
+      success:function (response){
+        $('body').html(response);
+      }
+    });
+  });
+  $('.ajax-tags').click(function (){
+    $.ajax({
+      type:'get',
+      data:{},
+      url: /*[[@{/admin/tags}]]*/'blog-input.html',
+      dataType:'html',
+      success:function (response){
+        $('body').html(response);
+      }
+    });
+  });
+  $('.ajax-tags-input').click(function (){
+    $.ajax({
+      type:'get',
+      data:{},
+      url: /*[[@{/admin/tags/input}]]*/'blog-input.html',
+      dataType:'html',
+      success:function (response){
+        $('body').html(response);
+      }
+    });
+  });
+  $('.ajax-types').click(function (){
+    $.ajax({
+      type:'get',
+      data:{},
+      url: /*[[@{/admin/types}]]*/'blog-input.html',
+      dataType:'html',
+      success:function (response){
+        $('body').html(response);
+      }
+    });
+  });
+  $('.ajax-types-input').click(function (){
+    $.ajax({
+      type:'get',
+      data:{},
+      url: /*[[@{/admin/types/input}]]*/'blog-input.html',
+      dataType:'html',
+      success:function (response){
+        $('body').html(response);
+      }
+    });
+  });
+
+</script>
+</body>
+</html>
